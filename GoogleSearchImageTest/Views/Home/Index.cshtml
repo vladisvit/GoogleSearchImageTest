@@ -1,0 +1,22 @@
+﻿@model IEnumerable<GoogleSearchImageTest.Models.SearchResult>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<form name="searchForm" ng-controller="mainController as main" ng-submit="main.doSearch()">
+    <div class="input-group">
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-search"></span>
+        </span>
+        <input type="text" class="form-control" ng-model="main.searchInput">
+    </div>
+    <div ng-repeat="item in main.result.items">
+        <div ng-repeat="image in item.pagemap.cse_image">
+            <img src="{{image.src}}" alt="{{item.title}}" height="200" width="200">
+            {{image.src}}
+        </div>
+    </div>
+</form>
+
+@Html.Partial("PreviousResults", @Model)

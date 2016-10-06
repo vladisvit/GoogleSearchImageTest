@@ -13,5 +13,6 @@ namespace GoogleSearchImageTest.Models
         }
 
         public System.Data.Entity.DbSet<GoogleSearchImageTest.Models.SearchResult> SearchResults { get; set; }
+        public DbSet<SearchResultItem> SearchResultItems { get; set; }
     }
 }

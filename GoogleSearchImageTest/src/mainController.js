@@ -31,9 +31,9 @@
                 }
 
                 var splitChar = "/";
-                itemObj.image = items[i].pagemap.cse_image[0];
-                if (searchService.isSplit(itemObj.image.src, splitChar)) {
-                    itemObj.image.filename = itemObj.image.src.split(splitChar).pop();
+                itemObj.src = items[i].pagemap.cse_image[0].src;
+                if (searchService.isSplit(itemObj.src, splitChar)) {
+                    itemObj.filename = itemObj.src.split(splitChar).pop();
                 }
 
                 vm.result.push(itemObj);

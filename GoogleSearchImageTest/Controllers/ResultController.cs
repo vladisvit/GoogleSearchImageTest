@@ -21,28 +21,26 @@ namespace GoogleSearchImageTest.Controllers
                  SearchDate = DateTime.Now,
                  Items = new List<SearchResultItem>()
                  {
-                     new SearchResultItem()
-                     {
-                         Id = 1,
-                         Title = "yaaahooo",
-                         HtmlTitle = @"<span>YH</span>",
-                         Image = new ResultImage() {
-                         FileName = "yaay.jpg",
-                         Src = @"http://ddd.com/yaay.jpg"},
-                         Deleted = false,
-                         SearchResultId = 1
-                     },
-                     new SearchResultItem()
-                     {
-                         Id = 2,
-                         Title = "yaaahooo2",
-                         HtmlTitle = @"<span>YH2</span>",
-                         Image = new ResultImage() {
-                         FileName = "yaay2.jpg",
-                         Src = @"http://ddd.com/yaay2.jpg"},
-                         Deleted = false,
-                         SearchResultId = 1
-                     }
+                    new SearchResultItem()
+                            {
+                                Id = 1,
+                                Title = "yaaahooo",
+                                HtmlTitle = @"<span>YH</span>",
+                                FileName = "yaay.jpg",
+                                Src = @"http://ddd.com/yaay.jpg",
+                                Deleted = false,
+                                SearchResultId = 1
+                            },
+                            new SearchResultItem()
+                            {
+                                Id = 2,
+                                Title = "yaaahooo2",
+                                HtmlTitle = @"<span>YH2</span>",
+                                FileName = "yaay2.jpg",
+                                Src = @"http://ddd.com/yaay2.jpg",
+                                Deleted = false,
+                                SearchResultId = 1
+                            }
                  }
              },
              new SearchResult()
@@ -53,16 +51,15 @@ namespace GoogleSearchImageTest.Controllers
                  Items = new List<SearchResultItem>()
                  {
                      new SearchResultItem()
-                     {
-                         Id = 2,
-                         Title = "yaaahooo2",
-                         HtmlTitle = @"<span>YH2</span>",
-                         Image = new ResultImage() {
-                         FileName = "yaay2.jpg",
-                         Src = @"http://ddd.com/yaay2.jpg"},
-                         Deleted = false,
-                         SearchResultId = 2
-                     }
+                            {
+                                Id = 2,
+                                Title = "yaaahooo2",
+                                HtmlTitle = @"<span>YH2</span>",
+                                FileName = "yaay2.jpg",
+                                Src = @"http://ddd.com/yaay2.jpg",
+                                Deleted = false,
+                                SearchResultId = 2
+                            }
                  }
              }
             };
@@ -86,11 +83,8 @@ namespace GoogleSearchImageTest.Controllers
                                 Id = 1,
                                 Title = "yaaahooo",
                                 HtmlTitle = @"<span>YH</span>",
-                                Image = new ResultImage()
-                                {
-                                    FileName = "yaay.jpg",
-                                    Src = @"http://ddd.com/yaay.jpg"
-                                },
+                                FileName = "yaay.jpg",
+                                Src = @"http://ddd.com/yaay.jpg",
                                 Deleted = false,
                                 SearchResultId = 1
                             },
@@ -99,11 +93,8 @@ namespace GoogleSearchImageTest.Controllers
                                 Id = 2,
                                 Title = "yaaahooo2",
                                 HtmlTitle = @"<span>YH2</span>",
-                                Image = new ResultImage()
-                                {
-                                    FileName = "yaay2.jpg",
-                                    Src = @"http://ddd.com/yaay2.jpg"
-                                },
+                                FileName = "yaay2.jpg",
+                                Src = @"http://ddd.com/yaay2.jpg",
                                 Deleted = false,
                                 SearchResultId = 1
                             }
@@ -116,28 +107,25 @@ namespace GoogleSearchImageTest.Controllers
             {
                 return new SearchResult[]
        {
-                    new SearchResult()
-                    {
-                        Id = 2,
-                        Name = "res#2",
-                        SearchDate = DateTime.Now,
-                        Items = new List<SearchResultItem>()
-                        {
-                            new SearchResultItem()
-                            {
-                                Id = 2,
-                                Title = "yaaahooo2",
-                                HtmlTitle = @"<span>YH2</span>",
-                                Image = new ResultImage()
-                                {
-                                    FileName = "yaay2.jpg",
-                                    Src = @"http://ddd.com/yaay2.jpg"
-                                },
-                                Deleted = false,
-                                SearchResultId = 2
-                            }
-                        }
-                    }
+                                 new SearchResult()
+             {
+                 Id = 2,
+                 Name = "res#2",
+                 SearchDate = DateTime.Now,
+                 Items = new List<SearchResultItem>()
+                 {
+                     new SearchResultItem()
+                     {
+                         Id = 2,
+                         Title = "yaaahooo2",
+                         HtmlTitle = @"<span>YH2</span>",
+                         FileName = "yaay2.jpg",
+                         Src = @"http://ddd.com/yaay2.jpg",
+                         Deleted = false,
+                         SearchResultId = 2
+                     }
+                 }
+                }
        };
             }
 

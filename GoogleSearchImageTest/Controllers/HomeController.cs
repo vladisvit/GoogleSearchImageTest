@@ -18,7 +18,7 @@ namespace GoogleSearchImageTest.Controllers
         public ActionResult Index()
         {
             var results = new SearchResult[]
-            {
+                        {
              new SearchResult()
              {
                  Id = 1,
@@ -31,9 +31,8 @@ namespace GoogleSearchImageTest.Controllers
                          Id = 1,
                          Title = "yaaahooo",
                          HtmlTitle = @"<span>YH</span>",
-                         Image = new ResultImage() {
                          FileName = "yaay.jpg",
-                         Src = @"http://ddd.com/yaay.jpg"},
+                         Src = @"http://ddd.com/yaay.jpg",
                          Deleted = false,
                          SearchResultId = 1
                      },
@@ -42,9 +41,8 @@ namespace GoogleSearchImageTest.Controllers
                          Id = 2,
                          Title = "yaaahooo2",
                          HtmlTitle = @"<span>YH2</span>",
-                         Image = new ResultImage() {
                          FileName = "yaay2.jpg",
-                         Src = @"http://ddd.com/yaay2.jpg"},
+                         Src = @"http://ddd.com/yaay2.jpg",
                          Deleted = false,
                          SearchResultId = 1
                      }
@@ -62,18 +60,17 @@ namespace GoogleSearchImageTest.Controllers
                          Id = 2,
                          Title = "yaaahooo2",
                          HtmlTitle = @"<span>YH2</span>",
-                         Image = new ResultImage() {
                          FileName = "yaay2.jpg",
-                         Src = @"http://ddd.com/yaay2.jpg"},
+                         Src = @"http://ddd.com/yaay2.jpg",
                          Deleted = false,
                          SearchResultId = 2
                      }
                  }
              }
-            };
+                        };
 
-            return View(results);
-            //return View(db.SearchResults.ToList());
+            //return View(results);
+            return View(db.SearchResults.ToList());
         }
 
         // GET: SearchResults/Delete/5

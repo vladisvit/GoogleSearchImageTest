@@ -3,20 +3,36 @@
 @{
     ViewBag.Title = "Index";
 }
+<div class="row" ng-controller="mainController as main">
+    <div class="col-xs-12 col-sm-6 col-md-8 searh-box" >
+        <form name="searchForm" ng-submit="main.doSearch()" class="form-horizontal">
+            <div class="input-group col-sm-12">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-search"></span>
+                </span>
+                <input type="text" class="form-control" ng-model="main.searchInput">
+            </div>
 
-<form name="searchForm" ng-controller="mainController as main" ng-submit="main.doSearch()">
-    <div class="input-group">
-        <span class="input-group-addon">
-            <span class="glyphicon glyphicon-search"></span>
-        </span>
-        <input type="text" class="form-control" ng-model="main.searchInput">
-    </div>
-    <div ng-repeat="item in main.result.items">
-        <div ng-repeat="image in item.pagemap.cse_image">
-            <img src="{{image.src}}" alt="{{item.title}}" height="200" width="200">
-            {{image.src}}
+        </form>
+        <div class="search-result-items">
+            <div ng-repeat="item in main.result">
+                <div class="search-item col-sm-3">
+                    <div class="img-wrap">
+                        <div class="close">&times;</div>
+                        <img src="{{item.image.src}}" alt="{{item.title}}" class="img-responsive img-thumbnail center-block">
+                    </div>
+                    <div class="file-name">
+                        <a href="{{item.image.src}}">{{item.image.filename}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="text-center save-result">
+            <button type="button" class="btn btn-primary btn-sm" ng-click="main.saveResult()">Save search results</button>
         </div>
     </div>
-</form>
-
-@Html.Partial("PreviousResults", @Model)
+    <div class="col-xs-6 col-md-4 arch-search">
+        @Html.Partial("PreviousResults", @Model)
+    </div>
+</div>

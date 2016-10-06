@@ -10,5 +10,6 @@ namespace GoogleSearchImageTest.Models
         public int Id { get; set; }
         public string  Name { get; set; }
         public DateTime SearchDate { get; set; }
+        public List<SearchResultItem> Items { get; set; } 
     }
 }

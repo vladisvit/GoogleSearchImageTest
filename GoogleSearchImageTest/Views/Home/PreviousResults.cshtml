@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<GoogleSearchImageTest.Models.SearchResult>
-<table class="table">
+<table class="table table-bordered table-hover">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
@@ -7,20 +7,26 @@
         <th>
             @Html.DisplayNameFor(model => model.SearchDate)
         </th>
-        <th></th>
+        <th>Restore</th>
+        <th>Delete</th>
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                <a href="#" ng-click="main.loadResult(@item.Id)">@item.Name</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SearchDate)
             </td>
             <td>
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                <button type="button" data-buttontype="remove">
+                    <span class="glyphicon glyphicon-remove" />
+                </button>
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new {id = item.Id})
             </td>
         </tr>
     }

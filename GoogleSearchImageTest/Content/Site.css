@@ -9,10 +9,49 @@
     padding-right: 15px;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+div.row {
+    padding-top: 5px;
+}
+
+div.arch-search {
+
+}
+
+div.searh-box {   
+    border-right-style: solid;
+    border-right-width: 1px;
+}
+
+div.search-item {
+    padding: 3px;
+    width: 200px;
+    height: 200px;
+    display: inline-block;
+    overflow-wrap: break-word;    
+}
+
+div.file-name {
+    padding-top: 3px;
+    text-align: center;
+}
+
+div.search-result-items {
+    padding-top: 5px;
+}
+
+div.save-result {
+    border-top-style: solid;
+    border-top-width: 1px;
+    padding-top: 3px;
+}
+.img-wrap {
+    position: relative;
+}
+.img-wrap .close {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    z-index: 100;
+    background-color: #ffffff;
 }
 

@@ -17,7 +17,7 @@
             };
 
         searchProcessor.save = function(resultData) {
-            return $http.post("");
+            return $http.post("/api/result/", resultData);
         };
 
         searchProcessor.load = function(id) {

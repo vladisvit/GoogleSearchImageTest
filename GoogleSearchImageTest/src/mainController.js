@@ -24,7 +24,7 @@
                 var itemObj = {};
                 itemObj.title = items[i].title;
                 itemObj.htmlTitle = items[i].htmlTitle;
-                itemObj.thumbnail = items[i].pagemap.cse_thumbnail;
+                //itemObj.thumbnail = items[i].pagemap.cse_thumbnail;
 
                 if (!items[i].pagemap.hasOwnProperty('cse_image')) {
                     continue;
@@ -47,11 +47,12 @@
             });
         };
 
-        vm.saveResult = function() {
-            searchService.load().then(function(response) {
-                vm.result = [];
+        vm.saveResult = function () {
+            var saveResult = {};
+            saveResult.name = vm.searchInput;
+            saveResult.items = vm.result;
+            searchService.save(saveResult).then(function(response) {
                 var d = response.data;
-                vm.result = d[0].items;
             });
         };
 
@@ -59,7 +60,7 @@
             searchService.load(id).then(function (response) {
                 vm.result = [];
                 var d = response.data;
-                vm.result = d[0].items;
+                vm.result = d.items;
             });
         };
     }

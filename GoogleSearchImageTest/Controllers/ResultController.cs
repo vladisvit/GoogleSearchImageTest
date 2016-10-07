@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -11,78 +13,57 @@ namespace GoogleSearchImageTest.Controllers
     public class ResultController : ApiController
     {
         private GoogleSearchImageTestContext db = new GoogleSearchImageTestContext();
-        public SearchResult[] Get()
-        {
-            return new SearchResult[]
-            {
-             new SearchResult()
-             {
-                 Id = 1,
-                 Name = "res#1",
-                 SearchDate = DateTime.Now,
-                 Items = new List<SearchResultItem>()
-                 {
-                    new SearchResultItem()
-                            {
-                                Id = 1,
-                                Title = "yaaahooo",
-                                HtmlTitle = @"<span>YH</span>",
-                                FileName = "yaay.jpg",
-                                Src = @"http://ddd.com/yaay.jpg",
-                                Deleted = false,
-                                SearchResultId = 1
-                            },
-                            new SearchResultItem()
-                            {
-                                Id = 2,
-                                Title = "yaaahooo2",
-                                HtmlTitle = @"<span>YH2</span>",
-                                FileName = "yaay2.jpg",
-                                Src = @"http://ddd.com/yaay2.jpg",
-                                Deleted = false,
-                                SearchResultId = 1
-                            }
-                 }
-             },
-             new SearchResult()
-             {
-                 Id = 2,
-                 Name = "res#2",
-                 SearchDate = DateTime.Now,
-                 Items = new List<SearchResultItem>()
-                 {
-                     new SearchResultItem()
-                            {
-                                Id = 2,
-                                Title = "yaaahooo2",
-                                HtmlTitle = @"<span>YH2</span>",
-                                FileName = "yaay2.jpg",
-                                Src = @"http://ddd.com/yaay2.jpg",
-                                Deleted = false,
-                                SearchResultId = 2
-                            }
-                 }
-             }
-            };
-        }
 
         public SearchResult Get(int id)
         {
             var searchResult = db.SearchResults.Include("Items").FirstOrDefault(s => s.Id == id);
-            
+
             return searchResult;
         }
 
         public HttpResponseMessage Post(SearchResult searchResult)
         {
+            var isUpdate = db.SearchResults.Any(s => s.Id == searchResult.Id);
             searchResult.SearchDate = DateTime.Now;
-            searchResult = db.SearchResults.Add(searchResult);
-            db.SaveChanges();
-            var response = Request.CreateResponse<SearchResult>(HttpStatusCode.Created,searchResult);
 
-            string uri = Url.Link("DefaultApi", new { searchResult.Id });
-            response.Headers.Location = new Uri(uri);
-            return response;
+            try
+            {
+                if (isUpdate)
+                {
+                    db.SearchResults.Attach(searchResult);
+                }
+                else
+                {
+                    searchResult = db.SearchResults.Add(searchResult);
+                }
+
+                var itemResult = db.SearchResults.Include(s => s.Items).First(s => s.Id == searchResult.Id);
+                var deletedItems = itemResult.Items.Where(i => i.Deleted).ToList();
+                db.SearchResultItems.RemoveRange(deletedItems);
+
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                return response;
+            }
+
+
+            if (isUpdate)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.OK); 
+                string uri = Url.Link("DefaultApi", new { searchResult.Id });
+                response.Headers.Location = new Uri(uri);
+                return response;
+            }
+            else
+            {
+                var response = Request.CreateResponse<SearchResult>(HttpStatusCode.Created, searchResult);
+                string uri = Url.Link("DefaultApi", new { searchResult.Id });
+                response.Headers.Location = new Uri(uri);
+                return response;
+            }
         }
     }
 }

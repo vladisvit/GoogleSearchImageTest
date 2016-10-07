@@ -15,14 +15,14 @@
 
         </form>
         <div class="search-result-items">
-            <div ng-repeat="item in main.result">
-                <div class="search-item col-sm-3">
+            <div ng-repeat="item in main.result.items">
+                <div class="search-item col-sm-3" ng-hide="item.Deleted">
                     <div class="img-wrap">
-                        <div class="close">&times;</div>
-                        <img src="{{item.image.src}}" alt="{{item.title}}" class="img-responsive img-thumbnail center-block">
+                        <div class="close" ng-click="main.deleteItem(item)">&times;</div>
+                        <img src="{{item.src}}" alt="{{item.title}}" class="img-responsive img-thumbnail center-block">
                     </div>
                     <div class="file-name">
-                        <a href="{{item.image.src}}">{{item.image.filename}}</a>
+                        <a href="{{item.src}}" download>{{item.fileName}} </a>
                     </div>
                 </div>
             </div>
@@ -33,6 +33,6 @@
         </div>
     </div>
     <div class="col-xs-6 col-md-4 arch-search">
-        @Html.Partial("PreviousResults", @Model)
+        @{ Html.RenderPartial("PreviousResults", Model); }
     </div>
 </div>

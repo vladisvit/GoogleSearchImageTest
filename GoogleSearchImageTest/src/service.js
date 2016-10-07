@@ -24,6 +24,10 @@
             return $http.get("/api/result/"+id);
         };
 
+        searchProcessor.refresh = function() {
+            window.location.reload();
+        };
+
         searchProcessor.isSplit = function(str, token) {
             return (str || '').split(token).length > 1;
         };

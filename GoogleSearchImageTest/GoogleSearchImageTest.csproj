@@ -110,9 +110,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\DatabaseTest.mdf" />
-    <Content Include="App_Data\DatabaseTest_log.ldf">
-      <DependentUpon>DatabaseTest.mdf</DependentUpon>
+    <Content Include="App_Data\GoogleSearchImageTestContext-20161005163426.mdf" />
+    <Content Include="App_Data\GoogleSearchImageTestContext-20161005163426_log.ldf">
+      <DependentUpon>GoogleSearchImageTestContext-20161005163426.mdf</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -932,6 +932,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\GoogleSearchImageTestContext.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\SearchResultItem.cs" />

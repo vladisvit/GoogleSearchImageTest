@@ -14,28 +14,27 @@ namespace GoogleSearchImageTest.Controllers
     {
         private GoogleSearchImageTestContext db = new GoogleSearchImageTestContext();
 
-        // GET: SearchResults
         public ActionResult Index()
         {
-            return View(db.SearchResults.ToList());
+            return View(db.SearchResults.Include("Items").ToList());
         }
 
-        // GET: SearchResults/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             SearchResult searchResult = db.SearchResults.Find(id);
             if (searchResult == null)
             {
                 return HttpNotFound();
             }
+
             return View(searchResult);
         }
 
-        // POST: SearchResults/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -43,6 +42,7 @@ namespace GoogleSearchImageTest.Controllers
             SearchResult searchResult = db.SearchResults.Find(id);
             db.SearchResults.Remove(searchResult);
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

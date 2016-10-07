@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<GoogleSearchImageTest.Models.SearchResult>
+<div class="text-center alert-info">Previous results</div>
 <table class="table table-bordered table-hover">
     <tr>
         <th>
@@ -7,7 +8,6 @@
         <th>
             @Html.DisplayNameFor(model => model.SearchDate)
         </th>
-        <th>Restore</th>
         <th>Delete</th>
     </tr>
 
@@ -15,18 +15,19 @@
     {
         <tr>
             <td>
-                <a href="#" ng-click="main.loadResult(@item.Id)">@item.Name</a>
+                <a href="#" ng-click="main.loadResult(@item.Id)">@item.Name</a>,
+                @{
+                    var imgStr = item.Items.Count == 1 ? "image" : "images";
+                    <div>@item.Items.Count @imgStr saved</div>  
+                 }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SearchDate)
             </td>
-            <td>
-                <button type="button" data-buttontype="remove">
-                    <span class="glyphicon glyphicon-remove" />
+            <td class="text-center">
+                <button type="button" data-buttontype="remove" onclick="location.href='@Url.Action("Delete", "Home", new {id = item.Id})'">
+                    <span class="glyphicon glyphicon-remove"/>
                 </button>
-            </td>
-            <td>
-                @Html.ActionLink("Delete", "Delete", new {id = item.Id})
             </td>
         </tr>
     }

@@ -934,6 +934,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\GoogleSearchImageTestContext.cs" />
+    <Compile Include="Models\IGoogleSearchImageTestContext.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\SearchResultItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

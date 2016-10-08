@@ -8,13 +8,10 @@
     mainController.$inject = ['searchService'];
 
     function mainController(searchService) {
-
-
         var vm = this;
         vm.title = 'controller';
         vm.result = {};
         vm.result.items = [];
-
         vm.searchInput = '';
 
         function getNeedData(respData) {
@@ -53,14 +50,6 @@
 
         vm.saveResult = function () {
             var saveResult = {};
-            //// check it will be update or insert
-            //if (vm.rootItem.hasOwnProperty("id")) {
-            //    saveResult.id = vm.rootItem.id;
-            //    saveResult.name = vm.rootItem.name;
-            //} else {
-            //    saveResult.name = vm.searchInput;
-            //}
-
             saveResult = vm.result;
             searchService.save(saveResult).then(function (response) {
                 var d = response.data;

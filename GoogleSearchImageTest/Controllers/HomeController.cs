@@ -12,7 +12,17 @@ namespace GoogleSearchImageTest.Controllers
 {
     public class HomeController : Controller
     {
-        private GoogleSearchImageTestContext db = new GoogleSearchImageTestContext();
+        private readonly IGoogleSearchImageTestContext db = new GoogleSearchImageTestContext();
+
+        public HomeController()
+        {
+            
+        }
+
+        public HomeController(IGoogleSearchImageTestContext context)
+        {
+            db = context;
+        }
 
         public ActionResult Index()
         {
@@ -52,6 +62,7 @@ namespace GoogleSearchImageTest.Controllers
             {
                 db.Dispose();
             }
+
             base.Dispose(disposing);
         }
     }

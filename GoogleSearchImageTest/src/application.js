@@ -1,5 +1,5 @@
 ﻿(function () {
 
-    var apptest = angular.module('apptest', []);
+    angular.module('apptest', []);
 
 })();

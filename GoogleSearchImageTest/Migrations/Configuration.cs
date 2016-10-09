@@ -1,11 +1,9 @@
+using System.Data.Entity.Migrations;
+using GoogleSearchImageTest.Models;
+
 namespace GoogleSearchImageTest.Migrations
 {
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<GoogleSearchImageTest.Models.GoogleSearchImageTestContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<GoogleSearchImageTestContext>
     {
         public Configuration()
         {
@@ -13,7 +11,7 @@ namespace GoogleSearchImageTest.Migrations
             AutomaticMigrationDataLossAllowed = true;
         }
 
-        protected override void Seed(GoogleSearchImageTest.Models.GoogleSearchImageTestContext context)
+        protected override void Seed(GoogleSearchImageTestContext context)
         {
             //  This method will be called after migrating to the latest version.
 

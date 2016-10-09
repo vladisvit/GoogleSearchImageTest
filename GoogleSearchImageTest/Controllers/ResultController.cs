@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -24,11 +22,15 @@ namespace GoogleSearchImageTest.Controllers
             db = context;
         }
 
-        public SearchResult Get(int id)
+        public HttpResponseMessage Get(int id)
         {
             var searchResult = db.SearchResults.Include("Items").FirstOrDefault(s => s.Id == id);
+            if (searchResult == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
 
-            return searchResult;
+            return Request.CreateResponse(searchResult);
         }
 
         public HttpResponseMessage Post(SearchResult searchResult)

@@ -10,13 +10,16 @@
 
         var searchProcessor = {};
         var cx = "014337679278764266478%3Aqkzs-j2iy1g&key=AIzaSyA1u-0AaFC9fFpMWTSyu6f6ki2wb19na_g";
+        var imageType = ["any","bmp", "gif", "png", "jpg", "svg", "pdf"];
 
         searchProcessor.search =
-            function (queryStr) {
-                return $http.get("https://www.googleapis.com/customsearch/v1?q=" + queryStr + "&cx=" + cx);
+            function (queryStr, index) {
+                return $http.get("https://www.googleapis.com/customsearch/v1?q=" + queryStr + "&cx=" + cx + "&fields=items,queries&start=" + index);
             };
 
-        searchProcessor.save = function(resultData) {
+        searchProcessor.save = function (resultData) {
+            delete resultData.queries;
+            delete resultData.items.hide;
             return $http.post("/api/result/", resultData);
         };
 

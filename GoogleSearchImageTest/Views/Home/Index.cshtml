@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Index";
 }
+
 <div class="row" ng-controller="mainController as main">
     <div class="col-xs-12 col-sm-6 col-md-8 searh-box" >
         <form name="searchForm" ng-submit="main.doSearch()" class="form-horizontal">
@@ -10,24 +11,45 @@
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-search"></span>
                 </span>
-                <input type="text" class="form-control" ng-model="main.searchInput">
+                <input type="text" class="form-control" name="search" title="search" ng-model="main.searchInput" />
             </div>
 
         </form>
         <div class="search-result-items">
             <div ng-repeat="item in main.result.items">
-                <div class="search-item col-sm-3" ng-hide="item.Deleted">
-                    <div class="img-wrap">
+                <div class="img-wrap" ng-hide="item.hide">
+                <div class="search-item col-sm-3 img-thumbnail" ng-hide="item.deleted">
+                    
                         <div class="close" ng-click="main.deleteItem(item)">&times;</div>
-                        <img src="{{item.src}}" alt="{{item.title}}" class="img-responsive img-thumbnail">
-                    </div>
+                        <img src="{{item.src}}" alt="{{item.title}}" class="img-responsive">
+
                     <div class="file-name">
                         <a href="{{item.src}}" download>{{item.fileName}} </a>
                     </div>
-                </div>
+                </div></div>
             </div>
         </div>
         <div class="clearfix"></div>
+        <div class="text-center">
+            <!-- pager -->
+            <ul ng-if="main.pager.pages.length > 1" class="pagination">
+                <li ng-class="{disabled:main.pager.currentPage === 1}">
+                    <a ng-click="main.setPage(1)">First</a>
+                </li>
+                <li ng-class="{disabled:main.pager.currentPage === 1}">
+                    <a ng-click="main.setPage(main.pager.currentPage - 1)">Previous</a>
+                </li>
+                <li ng-repeat="page in main.pager.pages" ng-class="{active:main.pager.currentPage === page}">
+                    <a ng-click="main.setPage(page)">{{page}}</a>
+                </li>
+                <li ng-class="{disabled:main.pager.currentPage === main.pager.totalPages}">
+                    <a ng-click="main.setPage(main.pager.currentPage + 1)">Next</a>
+                </li>
+                <li ng-class="{disabled:main.pager.currentPage === main.pager.totalPages}">
+                    <a ng-click="main.setPage(main.pager.totalPages)">Last</a>
+                </li>
+            </ul>
+        </div>
         <div class="text-center save-result">
             <button type="button" class="btn btn-primary btn-sm" ng-click="main.saveResult()">Save search results</button>
         </div>

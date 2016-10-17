@@ -12,22 +12,29 @@ namespace GoogleSearchImageTest
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/bower_components/jquery/dist/jquery.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-            "~/Scripts/angular.js",
-            "~/Scripts/angular-loader.js"));
+            "~/bower_components/angular/angular.js",
+            "~/bower_components/angular-sanitize/angular-sanitize.js",
+            "~/bower_components/angular-animate/angular-animate.js",
+            "~/bower_components/angular-cookies/angular-cookies.js",
+            "~/bower_components/angular-bootstrap/ui-bootstrap.js",
+            "~/bower_components/angular-loading-bar/build/loading-bar.js"));
+
+            bundles.Add(new StyleBundle("~/bundles/angular_css").Include(
+                "~/bower_components/angular-loading-bar/build/loading-bar.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                      "~/bower_components/bootstrap/dist/js/bootstrap.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/app").IncludeDirectory("~/src","*.js"));
+            bundles.Add(new ScriptBundle("~/bundles/app").IncludeDirectory("~/src","*.js", true));
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/bower_components/bootstrap/dist/css/bootstrap.css",
                       "~/Content/site.css"));
         }
     }

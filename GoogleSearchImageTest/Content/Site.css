@@ -46,6 +46,10 @@ div.save-result {
     padding-top: 3px;
 }
 
+.pagination a {
+    cursor: pointer;
+}
+
 .img-wrap {
     position: relative;
 }

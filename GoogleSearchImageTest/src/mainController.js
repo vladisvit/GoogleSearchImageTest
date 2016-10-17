@@ -15,37 +15,12 @@
         vm.searchInput = '';
 
         vm.pager = {};
-        vm.setPage = setPage;
-
-
-        function setPage(page) {
+        vm.setPage = function (page) {
             if (page < 1 || page > vm.pager.totalPages) {
                 return;
             }
-            var startIndex = vm.pager.startIndex;
-            if (vm.result.queries.nextPage) {
-                if (vm.pager.currentPage < page) {
-                    startIndex = vm.result.queries.nextPage[0].startIndex;
-                } else if (vm.pager.currentPage > page) {
-                    startIndex = vm.result.queries.previousPage[0].startIndex;
-                }
 
-                searchService.search(vm.searchInput, startIndex).then(function(response) {
-                    //vm.result = {};
-                    //vm.result.items = [];
-                    getNeedData(response.data);
-
-                    vm.pager = pagerService.getPager(vm.result, page);
-                });
-            } else {
-                if (vm.pager.currentPage < page) {
-                    vm.result.queries.request[0].startIndex = vm.pager.startIndex + vm.result.queries.request[0].count;
-                } else if (vm.pager.currentPage > page) {
-                    vm.result.queries.request[0].startIndex = vm.pager.startIndex - vm.result.queries.request[0].count;
-                }
-                
-                vm.pager = pagerService.getPager(vm.result, page);
-            }
+            vm.pager = pagerService.getPager(vm.result, page);
         }
 
         function getNeedData(respData) {
@@ -73,17 +48,24 @@
                 }
 
                 vm.result.items.push(itemObj);
-            } 
+            }
         };
 
         vm.doSearch = function () {
-            searchService.search(vm.searchInput, vm.pager.startIndex || 1).then(function (response) {
-                //vm.result = {};
-                //vm.result.items = [];
-                getNeedData(response.data);
-                // get pager object from service
-                vm.pager = pagerService.getPager(vm.result, 1);
-            });
+            var startIndex = 1;
+            vm.result = {};
+            vm.result.items = [];
+            // google api has restriction for free version 
+            // 100 requests per day and 10 result items per requests
+            for (var i = 1; i < 11; i++) {
+                searchService.search(vm.searchInput, startIndex).then(function (response) {
+                    getNeedData(response.data);
+                    // get pager object from service
+                    vm.pager = pagerService.getPager(vm.result, 1);
+                });
+
+                startIndex = i * searchService.numberOfResult + 1;
+            }
         };
 
         vm.saveResult = function () {
@@ -107,6 +89,7 @@
                 d.queries.request.push(query);
 
                 vm.result = d;
+                vm.searchInput = d.name;
                 vm.pager = pagerService.getPager(vm.result, 1);
             });
         };

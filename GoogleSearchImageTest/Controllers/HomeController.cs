@@ -1,13 +1,15 @@
 ﻿using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using GoogleSearchImageDomain.Abstract;
+using GoogleSearchImageDomain.Entities;
 using GoogleSearchImageTest.Models;
 
 namespace GoogleSearchImageTest.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IGoogleSearchImageTestContext db = new GoogleSearchImageTestContext();
+        private  IGoogleSearchImageTestContext _db;
 
         public HomeController()
         {
@@ -16,12 +18,13 @@ namespace GoogleSearchImageTest.Controllers
 
         public HomeController(IGoogleSearchImageTestContext context)
         {
-            db = context;
+            _db = context;
         }
 
         public ActionResult Index()
         {
-            return View(db.SearchResults.Include("Items").ToList());
+            var searchResultViewModel = new SearchResultViewModel() { SearchResults = _db.SearchResults.Include("Items").ToList() };
+            return View(searchResultViewModel);
         }
 
         public ActionResult Delete(int? id)
@@ -31,7 +34,7 @@ namespace GoogleSearchImageTest.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            SearchResult searchResult = db.SearchResults.Find(id);
+            SearchResult searchResult = _db.SearchResults.Find(id);
             if (searchResult == null)
             {
                 return HttpNotFound();
@@ -44,9 +47,8 @@ namespace GoogleSearchImageTest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            SearchResult searchResult = db.SearchResults.Find(id);
-            db.SearchResults.Remove(searchResult);
-            db.SaveChanges();
+            SearchResult searchResult = _db.SearchResults.Find(id);
+            _db.Delete(searchResult);
 
             return RedirectToAction("Index");
         }
@@ -55,7 +57,7 @@ namespace GoogleSearchImageTest.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db?.Dispose();
             }
 
             base.Dispose(disposing);

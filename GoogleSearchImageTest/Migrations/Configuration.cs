@@ -1,4 +1,5 @@
 using System.Data.Entity.Migrations;
+using GoogleSearchImageDomain.Entities;
 using GoogleSearchImageTest.Models;
 
 namespace GoogleSearchImageTest.Migrations

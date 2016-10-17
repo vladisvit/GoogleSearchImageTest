@@ -1,4 +1,5 @@
-﻿using GoogleSearchImageTest.Models;
+﻿using GoogleSearchImageDomain.Entities;
+using GoogleSearchImageTest.Models;
 
 namespace GoogleSearchImageTest.Tests
 {

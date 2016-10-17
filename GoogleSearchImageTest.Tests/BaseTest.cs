@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Routing;
 using System.Web.Mvc;
+using GoogleSearchImageDomain.Entities;
 using GoogleSearchImageTest.Controllers;
 using GoogleSearchImageTest.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -90,7 +91,7 @@ namespace GoogleSearchImageTest.Tests
 
                 var viewResult = controller.Index() as ViewResult;
 
-                Assert.IsInstanceOfType(viewResult?.Model, typeof(IEnumerable<SearchResult>));
+                Assert.IsInstanceOfType(viewResult?.Model, typeof(SearchResultViewModel));
             }
 
             [TestMethod]

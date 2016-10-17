@@ -1,17 +1,17 @@
-﻿@model IEnumerable<GoogleSearchImageTest.Models.SearchResult>
+﻿@model GoogleSearchImageTest.Models.SearchResultViewModel
 <div class="text-center alert-info">Previous results</div>
 <table class="table table-bordered table-hover">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SearchDate)
+            @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().SearchDate)
         </th>
         <th>Delete</th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.SearchResults)
     {
         <tr>
             <td>

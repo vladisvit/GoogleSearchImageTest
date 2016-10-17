@@ -4,13 +4,15 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using GoogleSearchImageDomain.Abstract;
+using GoogleSearchImageDomain.Entities;
 using GoogleSearchImageTest.Models;
 
 namespace GoogleSearchImageTest.Controllers
 {
     public class ResultController : ApiController
     {
-        private readonly IGoogleSearchImageTestContext db = new GoogleSearchImageTestContext();
+        private readonly IGoogleSearchImageTestContext _db;
 
         public ResultController()
         {
@@ -19,12 +21,12 @@ namespace GoogleSearchImageTest.Controllers
 
         public ResultController(IGoogleSearchImageTestContext context)
         {
-            db = context;
+            _db = context;
         }
 
         public HttpResponseMessage Get(int id)
         {
-            var searchResult = db.SearchResults.Include("Items").FirstOrDefault(s => s.Id == id);
+            var searchResult = _db.SearchResults.Include("Items").FirstOrDefault(s => s.Id == id);
             if (searchResult == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
@@ -35,32 +37,15 @@ namespace GoogleSearchImageTest.Controllers
 
         public HttpResponseMessage Post(SearchResult searchResult)
         {
-            var isUpdate = db.SearchResults.Any(s => s.Id == searchResult.Id);
-            searchResult.SearchDate = DateTime.Now;
+            var isUpdate = _db.SearchResults.Any(s => s.Id == searchResult.Id);
 
             try
             {
-                if (isUpdate)
-                {
-                    db.SearchResults.Attach(searchResult);
-                    var itemResult = db.SearchResults.Include(s => s.Items).FirstOrDefault(s => s.Id == searchResult.Id);
-                    if (itemResult != null)
-                    {
-                        var deletedItems = itemResult?.Items.Where(i => i.Deleted).ToList();
-                        db.SearchResultItems.RemoveRange(deletedItems);
-                    }
-                }
-                else
-                {
-                    searchResult.Items.RemoveAll(i => i.Deleted);
-                    searchResult = db.SearchResults.Add(searchResult);
-                }
-
-                db.SaveChanges();
+                _db.SaveUpdate(searchResult);
             }
             catch (Exception ex)
             {
-                var response = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                var response = Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
                 return response;
             }
 
@@ -74,11 +59,21 @@ namespace GoogleSearchImageTest.Controllers
             }
             else
             {
-                var response = Request.CreateResponse<SearchResult>(HttpStatusCode.Created, searchResult);
+                var response = Request.CreateResponse(HttpStatusCode.Created, searchResult);
                 string uri = Url.Link("DefaultApi", new { searchResult.Id });
                 response.Headers.Location = new Uri(uri);
                 return response;
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _db?.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

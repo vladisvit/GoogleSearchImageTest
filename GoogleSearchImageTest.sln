@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleSearchImageTest", "Go
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleSearchImageTest.Tests", "GoogleSearchImageTest.Tests\GoogleSearchImageTest.Tests.csproj", "{4C3F435E-E5F2-4C9D-A02C-6B4526EDA669}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleSearchImageDomain", "GoogleSearchImageDomain\GoogleSearchImageDomain.csproj", "{F8D57EE4-07FD-4E6B-988F-E8E9FEBDD9B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4C3F435E-E5F2-4C9D-A02C-6B4526EDA669}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C3F435E-E5F2-4C9D-A02C-6B4526EDA669}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C3F435E-E5F2-4C9D-A02C-6B4526EDA669}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8D57EE4-07FD-4E6B-988F-E8E9FEBDD9B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8D57EE4-07FD-4E6B-988F-E8E9FEBDD9B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8D57EE4-07FD-4E6B-988F-E8E9FEBDD9B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8D57EE4-07FD-4E6B-988F-E8E9FEBDD9B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

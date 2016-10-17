@@ -40,19 +40,22 @@
                     endPage = currentPage + 4;
                 }
             }
-            var startIndex = queries.request[0].startIndex;
+            var startIndex = (currentPage-1) * pageSize + 1;
             var endIndex = (startIndex + pageSize) - 1;
             if (endIndex > result.items.length) {
                 endIndex = result.items.length;
             }
+
             for (var k = 0; k < result.items.length; k++) {
                 result.items[k].hide = true;
             }
+
             var startShow = startIndex - 1;
             var endShow = endIndex;
             for (var j = startShow; j < endShow; j++) {
                 result.items[j].hide = false;
             }
+
             var pages = [];
             for (var i = startPage; i < endPage+1; i++) {
                 pages.push(i);

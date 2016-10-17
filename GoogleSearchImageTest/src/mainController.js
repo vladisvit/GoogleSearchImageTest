@@ -13,7 +13,7 @@
         vm.result = {};
         vm.result.items = [];
         vm.searchInput = '';
-
+        vm.previousResults = [];
         vm.pager = {};
         vm.setPage = function (page) {
             if (page < 1 || page > vm.pager.totalPages) {
@@ -77,21 +77,35 @@
             });
         };
 
+        function processingResponse(data) {
+            var d = data;
+            d.queries = {};
+            d.queries.request = [];
+            var query = {};
+            query.totalResults = d.items.length;
+            query.count = 10;
+            query.startIndex = 1;
+            d.queries.request.push(query);
+
+            vm.result = d;
+            vm.searchInput = d.name;
+            vm.pager = pagerService.getPager(vm.result, 1);
+        }
+        vm.loadResults = function() {
+            searchService.load().then(function (response) {
+                vm.previousResults = response.data;
+                processingResponse(response.data[0]);
+            });
+        };
+
         vm.loadResult = function (id) {
             searchService.load(id).then(function (response) {
-                var d = response.data;
-                d.queries = {};
-                d.queries.request = [];
-                var query = {};
-                query.totalResults = d.items.length;
-                query.count = 10;
-                query.startIndex = 1;
-                d.queries.request.push(query);
-
-                vm.result = d;
-                vm.searchInput = d.name;
-                vm.pager = pagerService.getPager(vm.result, 1);
+                processingResponse(response.data);
             });
+        };
+
+        vm.deleteResult = function(id) {
+            searchService.delete(id).then(function(response) {});
         };
 
         vm.deleteItem = function (item) {

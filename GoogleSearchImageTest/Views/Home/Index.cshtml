@@ -1,11 +1,11 @@
-﻿@model GoogleSearchImageTest.Models.SearchResultViewModel
+﻿
 
 @{
     ViewBag.Title = "Index";
 }
 
-<div class="row" ng-controller="mainController as main">
-    <div class="col-xs-12 col-sm-6 col-md-8 searh-box" >
+<div class="row" ng-controller="mainController as main" ng-init="main.loadResults()">
+    <div class="col-xs-12 col-sm-6 col-md-8 searh-box">
         <form name="searchForm" ng-submit="main.doSearch()" class="form-horizontal">
             <div class="input-group col-sm-12">
                 <span class="input-group-addon">
@@ -18,15 +18,16 @@
         <div class="search-result-items">
             <div ng-repeat="item in main.result.items">
                 <div class="img-wrap" ng-hide="item.hide">
-                <div class="search-item col-sm-3 img-thumbnail" ng-hide="item.deleted">
-                    
+                    <div class="search-item col-sm-3 img-thumbnail" ng-hide="item.deleted">
+
                         <div class="close" ng-click="main.deleteItem(item)">&times;</div>
                         <img src="{{item.src}}" alt="{{item.title}}" class="img-responsive">
 
-                    <div class="file-name">
-                        <a href="{{item.src}}" download>{{item.fileName}} </a>
+                        <div class="file-name">
+                            <a href="{{item.src}}" download>{{item.fileName}} </a>
+                        </div>
                     </div>
-                </div></div>
+                </div>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -55,6 +56,44 @@
         </div>
     </div>
     <div class="col-xs-6 col-md-4 arch-search">
-        @{ Html.RenderPartial("PreviousResults", Model); }
+        <div class="text-center alert-info">Previous results - {{main.previousResults.length}}</div>
+        <div>Search by name: <input ng-model="searchText"></div>
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>
+                    <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                        Name
+                        <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </th>
+                <th>
+                    <a href="#" ng-click="sortType = 'date'; sortReverse = !sortReverse">
+                        Search Date
+                        <span ng-show="sortType == 'date' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'date' && sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </th>
+                <th>Delete</th>
+            </tr>
+            <tr ng-repeat="pvitem in main.previousResults | orderBy:sortType:sortReverse | filter:searchText">
+                <td>
+                    <a href="#" ng-click="main.loadResult(pvitem.id)">{{pvitem.name}}</a>,
+
+                    <div>{{pvitem.items.length}} images saved</div>
+
+                </td>
+                <td>
+                    {{pvitem.searchDate | date:"MM/dd/yyyy 'at' h:mma"}}
+                </td>
+                <td class="text-center">
+                    <a href="#" type="button" data-buttontype="remove" ng-lick="main.deleteResult(pvitem.id)">
+                        <span class="glyphicon glyphicon-remove" />
+                    </a>
+                </td>
+            </tr>
+
+
+        </table>
     </div>
 </div>

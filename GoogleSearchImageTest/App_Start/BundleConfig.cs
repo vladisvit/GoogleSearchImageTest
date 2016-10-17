@@ -35,6 +35,7 @@ namespace GoogleSearchImageTest
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                       "~/bower_components/bootstrap/dist/css/bootstrap.css",
+                      "~/bower_components/font-awesome/css/font-awesome.css",
                       "~/Content/site.css"));
         }
     }

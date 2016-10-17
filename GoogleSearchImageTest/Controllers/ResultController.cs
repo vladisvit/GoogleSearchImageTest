@@ -24,6 +24,17 @@ namespace GoogleSearchImageTest.Controllers
             _db = context;
         }
 
+        public HttpResponseMessage Get()
+        {
+            var searchResult = _db.SearchResults.Include("Items");
+            if (searchResult == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+
+            return Request.CreateResponse(searchResult);
+        }
+
         public HttpResponseMessage Get(int id)
         {
             var searchResult = _db.SearchResults.Include("Items").FirstOrDefault(s => s.Id == id);
@@ -33,6 +44,17 @@ namespace GoogleSearchImageTest.Controllers
             }
 
             return Request.CreateResponse(searchResult);
+        }
+
+        public HttpResponseMessage Post(int id)
+        {
+            SearchResult searchResult = _db.SearchResults.Find(id);
+            _db.Delete(searchResult);
+
+            var response = Request.CreateResponse(HttpStatusCode.OK);
+            string uri = Url.Link("DefaultApi", new { searchResult.Id });
+            response.Headers.Location = new Uri(uri);
+            return response;
         }
 
         public HttpResponseMessage Post(SearchResult searchResult)

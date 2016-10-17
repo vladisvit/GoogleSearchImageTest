@@ -23,8 +23,10 @@ namespace GoogleSearchImageTest.Controllers
 
         public ActionResult Index()
         {
-            var searchResultViewModel = new SearchResultViewModel() { SearchResults = _db.SearchResults.Include("Items").ToList() };
-            return View(searchResultViewModel);
+            //var searchResultViewModel = new SearchResultViewModel() { SearchResults = _db.SearchResults.Include("Items").ToList() };
+            //return View(searchResultViewModel);
+
+            return View();
         }
 
         public ActionResult Delete(int? id)

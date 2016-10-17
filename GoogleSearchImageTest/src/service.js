@@ -24,8 +24,15 @@
             return $http.post("/api/result/", resultData);
         };
 
-        searchProcessor.load = function(id) {
-            return $http.get("/api/result/"+id);
+        searchProcessor.load = function (id) {
+            if (!id) {
+                id = "";
+            }
+            return $http.get("/api/result/" + id);
+        };
+
+        searchProcessor.delete = function(id) {
+            return $http.post("/api/result/", id);
         };
 
         searchProcessor.refresh = function() {

@@ -15,23 +15,71 @@
         vm.searchInput = '';
         vm.previousResults = [];
         vm.pager = {};
-        vm.setPage = function (page) {
+        vm.setPage = function(page) {
             if (page < 1 || page > vm.pager.totalPages) {
                 return;
             }
 
             vm.pager = pagerService.getPager(vm.result, page);
-        }
+        };
 
+        vm.doSearch = function() {
+            var startIndex = 1;
+            vm.result = {};
+            vm.result.items = [];
+            // google api has restriction for free version 
+            // 100 requests per day and 10 result items per requests
+            for (var i = 1; i < 11; i++) {
+                searchService.search(vm.searchInput, startIndex).then(function(response) {
+                    getNeedData(response.data);
+                    // get pager object from service
+                    vm.pager = pagerService.getPager(vm.result, 1);
+                });
+
+                startIndex = i * searchService.numberOfResult + 1;
+            }
+        };
+
+        vm.saveResult = function() {
+            var saveResult = {};
+            saveResult = vm.result;
+            searchService.save(saveResult).then(function(response) {
+                var d = response.data;
+                vm.loadResults();
+                processingResponse(d);
+            });
+        };
+
+        vm.loadResults = function() {
+            searchService.load().then(function(response) {
+                vm.previousResults = response.data;
+            });
+        };
+
+        vm.loadResult = function(id) {
+            searchService.load(id).then(function(response) {
+                processingResponse(response.data);
+            });
+        };
+
+        vm.deleteResult = function(id) {
+            searchService.delete(id).then(function(response) {});
+        };
+
+        vm.deleteItem = function(item) {
+            item.deleted = !item.deleted;
+        };
+
+        // get needed data from the google result object
         function getNeedData(respData) {
-            if (Object.keys(respData).length === 0) {
+            var gdata = respData;
+            if (Object.keys(gdata).length === 0) {
                 return;
             }
 
             vm.result.name = vm.searchInput;
-            var queries = respData.queries;
-            vm.result.queries = queries;
-            var items = respData.items;
+            vm.result.queries = gdata.queries;
+            var items = gdata.items;
             for (var i = 0; i < items.length; i++) {
                 if (!items[i].hasOwnProperty("pagemap") || !items[i].pagemap.hasOwnProperty('cse_image')) {
                     continue;
@@ -51,32 +99,7 @@
             }
         };
 
-        vm.doSearch = function () {
-            var startIndex = 1;
-            vm.result = {};
-            vm.result.items = [];
-            // google api has restriction for free version 
-            // 100 requests per day and 10 result items per requests
-            for (var i = 1; i < 11; i++) {
-                searchService.search(vm.searchInput, startIndex).then(function (response) {
-                    getNeedData(response.data);
-                    // get pager object from service
-                    vm.pager = pagerService.getPager(vm.result, 1);
-                });
-
-                startIndex = i * searchService.numberOfResult + 1;
-            }
-        };
-
-        vm.saveResult = function () {
-            var saveResult = {};
-            saveResult = vm.result;
-            searchService.save(saveResult).then(function (response) {
-                var d = response.data;
-                searchService.refresh();
-            });
-        };
-
+        //init with the first item
         function processingResponse(data) {
             var d = data;
             d.queries = {};
@@ -90,26 +113,7 @@
             vm.result = d;
             vm.searchInput = d.name;
             vm.pager = pagerService.getPager(vm.result, 1);
-        }
-        vm.loadResults = function() {
-            searchService.load().then(function (response) {
-                vm.previousResults = response.data;
-                processingResponse(response.data[0]);
-            });
         };
 
-        vm.loadResult = function (id) {
-            searchService.load(id).then(function (response) {
-                processingResponse(response.data);
-            });
-        };
-
-        vm.deleteResult = function(id) {
-            searchService.delete(id).then(function(response) {});
-        };
-
-        vm.deleteItem = function (item) {
-            item.deleted = !item.deleted;
-        };
     }
 })();

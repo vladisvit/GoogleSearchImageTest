@@ -11,7 +11,7 @@ namespace GoogleSearchImageDomain.Abstract
         DbSet<SearchResultItem> SearchResultItems { get; }
         int SaveChanges();
 
-        int SaveUpdate(SearchResult searchResult);
+        SearchResult SaveUpdate(SearchResult searchResult);
 
         int Delete(SearchResult searchResult);
     }

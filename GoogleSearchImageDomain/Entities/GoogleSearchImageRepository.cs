@@ -35,7 +35,7 @@ namespace GoogleSearchImageDomain.Entities
             return db.SaveChanges();
         }
 
-        public int SaveUpdate(SearchResult searchResult)
+        public SearchResult SaveUpdate(SearchResult searchResult)
         {
             var isUpdate = db.SearchResults.Any(s => s.Id == searchResult.Id);
             searchResult.SearchDate = DateTime.Now;
@@ -57,7 +57,9 @@ namespace GoogleSearchImageDomain.Entities
                 searchResult = db.SearchResults.Add(searchResult);
             }
 
-            return db.SaveChanges();
+            db.SaveChanges();
+
+            return searchResult;
         }
 
         public int Delete(SearchResult searchResult)

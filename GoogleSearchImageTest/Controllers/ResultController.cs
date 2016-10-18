@@ -63,7 +63,7 @@ namespace GoogleSearchImageTest.Controllers
 
             try
             {
-                _db.SaveUpdate(searchResult);
+                searchResult =_db.SaveUpdate(searchResult);
             }
             catch (Exception ex)
             {
@@ -74,7 +74,7 @@ namespace GoogleSearchImageTest.Controllers
 
             if (isUpdate)
             {
-                var response = Request.CreateResponse(HttpStatusCode.OK);
+                var response = Request.CreateResponse(HttpStatusCode.OK, searchResult);
                 string uri = Url.Link("DefaultApi", new { searchResult.Id });
                 response.Headers.Location = new Uri(uri);
                 return response;

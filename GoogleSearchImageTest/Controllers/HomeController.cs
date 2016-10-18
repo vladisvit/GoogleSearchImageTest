@@ -31,26 +31,26 @@ namespace GoogleSearchImageTest.Controllers
 
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
 
-            SearchResult searchResult = _db.SearchResults.Find(id);
-            if (searchResult == null)
-            {
-                return HttpNotFound();
-            }
+            //SearchResult searchResult = _db.SearchResults.Find(id);
+            //if (searchResult == null)
+            //{
+            //    return HttpNotFound();
+            //}
 
-            return View(searchResult);
+            return View();
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            SearchResult searchResult = _db.SearchResults.Find(id);
-            _db.Delete(searchResult);
+            //SearchResult searchResult = _db.SearchResults.Find(id);
+            //_db.Delete(searchResult);
 
             return RedirectToAction("Index");
         }

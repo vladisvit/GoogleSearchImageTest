@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Routing;
 using System.Web.Mvc;
+using GoogleSearchImageDomain.Abstract;
 using GoogleSearchImageDomain.Entities;
 using GoogleSearchImageTest.Controllers;
 using GoogleSearchImageTest.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace GoogleSearchImageTest.Tests
 {
@@ -18,22 +21,60 @@ namespace GoogleSearchImageTest.Tests
         [TestClass]
         public class ControllerTests
         {
-            private readonly TestGoogleSearchImageTestContext _context;
+            private const string Url = @"http://localhost:28463/api/result";
+            private Mock<IGoogleSearchImageTestContext> _context;
+            private ResultController controller;
 
-            public ControllerTests()
+            [TestInitialize()]
+            public void Setup()
             {
-                _context = new TestGoogleSearchImageTestContext();
-                _context.SearchResults.Add(GetSearchResult());
+                _context = new Mock<IGoogleSearchImageTestContext>();
+                _context.Setup(m => m.SearchResults).Returns(new List<SearchResult> { GetSearchResult() });
+
+                controller = new ResultController(_context.Object)
+                {
+                    Request =
+                    new HttpRequestMessage
+                    {
+                        RequestUri = new Uri(Url)
+                    },
+                    Configuration = new HttpConfiguration()
+                };
+
+                controller.Configuration.Routes.MapHttpRoute(
+                    name: "DefaultApi",
+                    routeTemplate: "api/{controller}/{id}",
+                    defaults: new { id = RouteParameter.Optional });
+
+                controller.RequestContext.RouteData = new HttpRouteData(
+                    route: new HttpRoute(),
+                    values: new HttpRouteValueDictionary { { "controller", "result" } });
+            }
+
+            [TestMethod]
+            public void GetReturnsSearchResults()
+            {
+                _context.Setup(m => m.SearchResults).Returns(new List<SearchResult> { GetSearchResult(), GetSearchResult2() });
+                _context.Setup(m => m.GetSearchResults())
+                    .Returns(new List<SearchResult> { GetSearchResult(), GetSearchResult2() });
+
+                var response = controller.Get();
+                Assert.IsFalse(response.StatusCode == HttpStatusCode.NotFound);
+                IEnumerable<SearchResult> searchResults;
+                Assert.IsTrue(response.TryGetContentValue<IEnumerable<SearchResult>>(out searchResults));
+                Assert.AreEqual(2, searchResults.Count());
             }
 
             [TestMethod]
             public void GetReturnsSearchResult()
             {
-                var controller = new ResultController(_context);
-                controller.Request = new HttpRequestMessage();
-                controller.Configuration = new HttpConfiguration();
+                _context.Setup(m => m.GetSearchResult(1)).Returns(GetSearchResult);
 
                 var response = controller.Get(1);
+
+                _context.Verify(m => m.GetSearchResult(1));
+
+                Assert.IsFalse(response.StatusCode == HttpStatusCode.NotFound);
 
                 SearchResult searchResult;
                 Assert.IsTrue(response.TryGetContentValue<SearchResult>(out searchResult));
@@ -43,65 +84,25 @@ namespace GoogleSearchImageTest.Tests
             [TestMethod]
             public void PostSearchResult()
             {
-                const string Url = @"http://localhost:28463/api/result";
-                var controller = new ResultController(_context);
-                controller.Request = new HttpRequestMessage
-                {
-                    RequestUri = new Uri(Url)
-                };
-                controller.Configuration = new HttpConfiguration();
-                controller.Configuration.Routes.MapHttpRoute(
-                    name: "DefaultApi",
-                    routeTemplate: "api/{controller}/{id}",
-                    defaults: new { id = RouteParameter.Optional });
-
-                controller.RequestContext.RouteData = new HttpRouteData(
-                    route: new HttpRoute(),
-                    values: new HttpRouteValueDictionary { { "controller", "result" } });
-
                 SearchResult result = GetSearchResult2();
+                _context.Setup(m => m.SaveUpdate(result)).Returns(result);
+
                 var response = controller.Post(result);
+                _context.Verify(m => m.SaveUpdate(result));
 
-                Assert.AreEqual(Url+@"/2", response.Headers.Location.AbsoluteUri);
-            }
-
-            [TestMethod]
-            public void ReturnIndex()
-            {
-                var controller = new HomeController(_context);
-                _context.SearchResults.Add(new SearchResult()
-                {
-                    Id = 2,
-                    Name = "res#2",
-                    SearchDate = DateTime.Now,
-                    Items = new List<SearchResultItem>()
-                    {
-                        new SearchResultItem()
-                        {
-                            Id = 2,
-                            Title = "yaaahooo2",
-                            HtmlTitle = @"<span>YH2</span>",
-                            FileName = "yaay2.jpg",
-                            Src = @"http://ddd.com/yaay2.jpg",
-                            Deleted = false,
-                            SearchResultId = 2
-                        }
-                    }
-                });
-
-                var viewResult = controller.Index() as ViewResult;
-
-                Assert.IsInstanceOfType(viewResult?.Model, typeof(SearchResultViewModel));
+                Assert.IsTrue(response.IsSuccessStatusCode);
             }
 
             [TestMethod]
             public void DeleteReturnsOk()
             {
-                var controller = new HomeController(_context);
+                _context.Setup(s => s.Delete(1));
 
-                var result = controller.DeleteConfirmed(1);
+                var response = controller.Delete(1);
 
-                Assert.IsFalse(_context.SearchResults.Any());
+                _context.Verify(m => m.Delete(1));
+
+                Assert.IsTrue(response.IsSuccessStatusCode);
             }
 
             private SearchResult GetSearchResult()

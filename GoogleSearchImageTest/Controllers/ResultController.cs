@@ -12,7 +12,7 @@ namespace GoogleSearchImageTest.Controllers
 {
     public class ResultController : ApiController
     {
-        private readonly IGoogleSearchImageTestContext _db;
+        private IGoogleSearchImageTestContext _db;
 
         public ResultController()
         {
@@ -26,7 +26,7 @@ namespace GoogleSearchImageTest.Controllers
 
         public HttpResponseMessage Get()
         {
-            var searchResult = _db.SearchResults.Include("Items");
+            var searchResult = _db.GetSearchResults();
             if (searchResult == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
@@ -37,7 +37,7 @@ namespace GoogleSearchImageTest.Controllers
 
         public HttpResponseMessage Get(int id)
         {
-            var searchResult = _db.SearchResults.Include("Items").FirstOrDefault(s => s.Id == id);
+            var searchResult = _db.GetSearchResult(id);
             if (searchResult == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
@@ -46,20 +46,18 @@ namespace GoogleSearchImageTest.Controllers
             return Request.CreateResponse(searchResult);
         }
 
-        public HttpResponseMessage Post(int id)
+        public HttpResponseMessage Delete(int id)
         {
-            SearchResult searchResult = _db.SearchResults.Find(id);
-            _db.Delete(searchResult);
+            
+            _db.Delete(id);
 
             var response = Request.CreateResponse(HttpStatusCode.OK);
-            string uri = Url.Link("DefaultApi", new { searchResult.Id });
-            response.Headers.Location = new Uri(uri);
             return response;
         }
 
         public HttpResponseMessage Post(SearchResult searchResult)
         {
-            var isUpdate = _db.SearchResults.Any(s => s.Id == searchResult.Id);
+            var isUpdate = searchResult.Id != 0;
 
             try
             {
@@ -70,7 +68,6 @@ namespace GoogleSearchImageTest.Controllers
                 var response = Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
                 return response;
             }
-
 
             if (isUpdate)
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -15,31 +16,23 @@ namespace GoogleSearchImageDomain.Entities
     public class GoogleSearchImageRepository : IGoogleSearchImageTestContext
     {
         private bool _disposed = false;
-        private readonly GoogleSearchImageTestContext db = new GoogleSearchImageTestContext();
+        private GoogleSearchImageTestContext db = new GoogleSearchImageTestContext();
 
-        public DbSet<SearchResult> SearchResults { get { return db.SearchResults; } }
-        public DbSet<SearchResultItem> SearchResultItems { get { return db.SearchResultItems; } }
+        public IEnumerable<SearchResult> SearchResults { get { return db.SearchResults; } }
+        public IEnumerable<SearchResultItem> SearchResultItems { get { return db.SearchResultItems; } }
 
-        public GoogleSearchImageRepository()
+        public IEnumerable<SearchResult> GetSearchResults()
         {
-            
-        }
-
-        public GoogleSearchImageRepository(GoogleSearchImageTestContext dbContext)
+            return db.SearchResults.Include("Items");
+        } 
+        public SearchResult GetSearchResult(int id)
         {
-            db = dbContext;
+            return db.SearchResults.Include("Items").FirstOrDefault(s => s.Id == id);
         }
-
-        public int SaveChanges()
-        {
-            return db.SaveChanges();
-        }
-
         public SearchResult SaveUpdate(SearchResult searchResult)
         {
-            var isUpdate = db.SearchResults.Any(s => s.Id == searchResult.Id);
+            var isUpdate = searchResult.Id != 0;
             searchResult.SearchDate = DateTime.Now;
-
 
             if (isUpdate)
             {
@@ -47,7 +40,7 @@ namespace GoogleSearchImageDomain.Entities
                 var itemResult = db.SearchResults.Include(s => s.Items).FirstOrDefault(s => s.Id == searchResult.Id);
                 if (itemResult != null)
                 {
-                    var deletedItems = itemResult?.Items.Where(i => i.Deleted).ToList();
+                    var deletedItems = itemResult.Items.Where(i => i.Deleted).ToList();
                     db.SearchResultItems.RemoveRange(deletedItems);
                 }
             }
@@ -62,8 +55,9 @@ namespace GoogleSearchImageDomain.Entities
             return searchResult;
         }
 
-        public int Delete(SearchResult searchResult)
+        public int Delete(int id)
         {
+            SearchResult searchResult = db.SearchResults.Find(id);
             db.SearchResults.Remove(searchResult);
             return db.SaveChanges();
         }

@@ -14,11 +14,16 @@ div.row {
 }
 
 div.arch-search {
+    padding: 3px;
+}
+
+div.arch-box {
+    border-left-style: solid;
+    border-left-width: 1px;
 }
 
 div.searh-box {
-    border-right-style: solid;
-    border-right-width: 1px;
+
 }
 
 div.search-item {

@@ -1,18 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Net.Http;
 using GoogleSearchImageDomain.Entities;
 
 namespace GoogleSearchImageDomain.Abstract
 {
-    public interface IGoogleSearchImageTestContext: IDisposable
+    public interface IGoogleSearchImageTestContext : IDisposable
     {
-        DbSet<SearchResult> SearchResults { get; }
-        DbSet<SearchResultItem> SearchResultItems { get; }
-        int SaveChanges();
+        IEnumerable<SearchResult> SearchResults { get; }
+        IEnumerable<SearchResultItem> SearchResultItems { get; }
 
+        IEnumerable<SearchResult> GetSearchResults();
+        SearchResult GetSearchResult(int id);
         SearchResult SaveUpdate(SearchResult searchResult);
 
-        int Delete(SearchResult searchResult);
+        int Delete(int id);
     }
 }

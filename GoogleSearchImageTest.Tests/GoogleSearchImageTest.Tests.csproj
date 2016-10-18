@@ -125,13 +125,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="BaseTest.cs" />
-    <Compile Include="TestSearchResultDbSet.cs" />
-    <Compile Include="TestGoogleSearchImageTestContext.cs" />
-    <Compile Include="TestSearchResultItemDbSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestDbSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoogleSearchImageDomain\GoogleSearchImageDomain.csproj">

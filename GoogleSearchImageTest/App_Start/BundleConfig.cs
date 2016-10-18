@@ -29,7 +29,8 @@ namespace GoogleSearchImageTest
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/bower_components/bootstrap/dist/js/bootstrap.js"));
+                      "~/bower_components/bootstrap/dist/js/bootstrap.js",
+                      "~/bower_components/bootstrap.growl/dist/bootstrap-notify.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/app").IncludeDirectory("~/src","*.js", true));
 

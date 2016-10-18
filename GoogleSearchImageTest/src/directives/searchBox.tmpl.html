@@ -1,0 +1,50 @@
+﻿<div class="col-xs-12 col-sm-6 col-md-8 searh-box">
+    <form name="searchForm" ng-submit="doSearch()" class="form-horizontal">
+        <div class="input-group col-sm-12">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-search"></span>
+            </span>
+            <input type="text" class="form-control" name="search" title="search" ng-model="searchInput" />
+        </div>
+
+    </form>
+    <div class="search-result-items">
+        <div ng-repeat="item in result.items">
+            <div class="img-wrap" ng-hide="item.hide">
+                <div class="search-item col-sm-3 img-thumbnail" ng-hide="item.deleted">
+
+                    <div class="close" ng-click="deleteItem(item)">&times;</div>
+                    <img src="{{item.src}}" alt="{{item.title}}" class="img-responsive">
+
+                    <div class="file-name">
+                        <a href="{{item.src}}" download>{{item.fileName}} </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="text-center">
+        <!-- pager -->
+        <ul ng-if="pager.pages.length > 1" class="pagination">
+            <li ng-class="{disabled:pager.currentPage === 1}">
+                <a ng-click="setPage(1)">First</a>
+            </li>
+            <li ng-class="{disabled:pager.currentPage === 1}">
+                <a ng-click="setPage(pager.currentPage - 1)">Previous</a>
+            </li>
+            <li ng-repeat="page in pager.pages" ng-class="{active:pager.currentPage === page}">
+                <a ng-click="setPage(page)">{{page}}</a>
+            </li>
+            <li ng-class="{disabled:pager.currentPage === pager.totalPages}">
+                <a ng-click="setPage(pager.currentPage + 1)">Next</a>
+            </li>
+            <li ng-class="{disabled:pager.currentPage === pager.totalPages}">
+                <a ng-click="setPage(pager.totalPages)">Last</a>
+            </li>
+        </ul>
+    </div>
+    <div class="text-center save-result">
+        <button type="button" class="btn btn-primary btn-sm" ng-disabled="isDisabled" ng-click="saveResult()">Save search results</button>
+    </div>
+</div>

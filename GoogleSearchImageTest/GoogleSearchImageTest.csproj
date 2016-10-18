@@ -177,9 +177,14 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="src\application.js" />
-    <Content Include="src\mainController.js" />
+    <Content Include="src\directives\archBox.directive.js" />
+    <Content Include="src\directives\archBox.tmpl.html" />
+    <Content Include="src\directives\main.directive.js" />
+    <Content Include="src\notificationService.js" />
     <Content Include="src\pagerService.js" />
-    <Content Include="src\service.js" />
+    <Content Include="src\directives\searchBox.directive.js" />
+    <Content Include="src\directives\searchBox.tmpl.html" />
+    <Content Include="src\searchService.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Home\PreviousResults.cshtml" />
   </ItemGroup>

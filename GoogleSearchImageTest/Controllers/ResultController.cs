@@ -46,9 +46,9 @@ namespace GoogleSearchImageTest.Controllers
             return Request.CreateResponse(searchResult);
         }
 
+        [HttpDelete]
         public HttpResponseMessage Delete(int id)
         {
-            
             _db.Delete(id);
 
             var response = Request.CreateResponse(HttpStatusCode.OK);

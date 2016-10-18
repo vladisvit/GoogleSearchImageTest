@@ -17,9 +17,9 @@
             // default to first page
             currentPage = currentPage || 1;
             var queries = result.queries;
-            var totalItems = Number(queries.request[0].totalResults);
+            var totalItems = result.items.length;
             // default page size is 10
-            var pageSize = queries.request[0].count || 10;
+            var pageSize = queries.request[0].count || 8;
 
             var totalPages = Math.ceil(totalItems / pageSize);
             var startPage, endPage;
@@ -42,11 +42,11 @@
             }
             var startIndex = (currentPage-1) * pageSize + 1;
             var endIndex = (startIndex + pageSize) - 1;
-            if (endIndex > result.items.length) {
-                endIndex = result.items.length;
+            if (endIndex > totalItems) {
+                endIndex = totalItems;
             }
 
-            for (var k = 0; k < result.items.length; k++) {
+            for (var k = 0; k < totalItems; k++) {
                 result.items[k].hide = true;
             }
 

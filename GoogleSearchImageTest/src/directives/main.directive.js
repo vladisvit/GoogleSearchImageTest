@@ -47,6 +47,7 @@ function mainController($scope, searchService, pagerService, notificationService
             var d = response.data;
             vm.loadResults();
             processingResponse(d);
+            $scope.$broadcast('resultSaved', vm.result);
             notificationService.success("Successful saving - " + vm.searchInput);
         }, function errorCallback(response) {
             notificationService.error("Unsuccessful saving - " + vm.searchInput);
@@ -78,10 +79,6 @@ function mainController($scope, searchService, pagerService, notificationService
         }, function errorCallback(response) {
             notificationService.error("Unsuccessful deleting");
         });
-    };
-
-    vm.deleteItem = function (item) {
-        item.deleted = !item.deleted;
     };
 
     vm.loadResults();

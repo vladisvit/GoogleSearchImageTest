@@ -180,11 +180,11 @@
     <Content Include="src\directives\archBox.directive.js" />
     <Content Include="src\directives\archBox.tmpl.html" />
     <Content Include="src\directives\main.directive.js" />
-    <Content Include="src\notificationService.js" />
-    <Content Include="src\pagerService.js" />
+    <Content Include="src\services\notificationService.js" />
+    <Content Include="src\services\pagerService.js" />
     <Content Include="src\directives\searchBox.directive.js" />
     <Content Include="src\directives\searchBox.tmpl.html" />
-    <Content Include="src\searchService.js" />
+    <Content Include="src\services\searchService.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Home\PreviousResults.cshtml" />
   </ItemGroup>

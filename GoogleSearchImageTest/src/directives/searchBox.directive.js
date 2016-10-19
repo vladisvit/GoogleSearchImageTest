@@ -17,7 +17,7 @@
         };
 
         scope.deleteItem = function(item) {
-            controller.deleteItem(item);
+            item.deleted = !item.deleted;
             scope.isDisabled = false;
         };
 
@@ -29,6 +29,11 @@
         scope.$on("searchDone", function (event, data) {
             scope.result = data;
             controller.searchInput = scope.searchInput;
+            scope.pager = controller.pager;
+        });
+
+        scope.$on("resultSaved", function(event, data) {
+            scope.result = data;
             scope.pager = controller.pager;
         });
 
